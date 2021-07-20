@@ -5,12 +5,13 @@ import { IMAGE_URL } from "../settings";
 import { Avatar, Divider, Icon } from "react-native-elements";
 import { movieDetailStyles } from "../Styles/MovieDetailStyle";
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 
 interface MovieDetailComponentProps {
   data: MovieDetail;
   animation: Animated.Value;
-  toggleSwipeUp: () => void;
+  toggleContainerOpen: () => void;
 }
 
 
@@ -23,12 +24,13 @@ const MovieDetailComponent: React.FC<MovieDetailComponentProps> = (props: MovieD
     });
     return genresName.join("/").toUpperCase();
   }
+
   return (
-    <View style={movieDetailStyles.container} key={props.data.id} >
+    <View style={movieDetailStyles.container} >
       <ImageBackground source={{
         uri: IMAGE_URL + props.data.backdropPath
       }} style={movieDetailStyles.mainBackground} blurRadius={80} resizeMode="cover">
-        <View style={movieDetailStyles.mainView}>
+        <View style={movieDetailStyles.mainView} key={props.data.id}>
           <View style={movieDetailStyles.containerImage}>
             <ImageBackground style={movieDetailStyles.imagePosterBackground}
                              imageStyle={movieDetailStyles.imagePosterStyle} source={{
@@ -44,42 +46,44 @@ const MovieDetailComponent: React.FC<MovieDetailComponentProps> = (props: MovieD
               </View>
             </ImageBackground>
           </View>
-          <Animated.View style={[movieDetailStyles.containerContent,
+          <Animated.View key={props.data.id} style={[movieDetailStyles.containerContent,
             { transform: [{ translateY: props.animation }] }]}>
-            <Icon type="material" name="maximize" style={movieDetailStyles.iconSwipeUp}/>
-            <TouchableOpacity style={movieDetailStyles.content} onPress={props.toggleSwipeUp} activeOpacity={100}>
-              <Text style={movieDetailStyles.valueLabel}
-                    numberOfLines={1}
-                    ellipsizeMode="tail">{props.data.title}</Text>
-              <View style={movieDetailStyles.yearAndGenreWrapper}>
-                <Text style={movieDetailStyles.valueSubTitle}>{props.data.releaseDate.substring(0, 4)}</Text>
-                <Divider orientation="vertical" color="black" width={5} style={movieDetailStyles.valueSubTitle}/>
-                <Text style={movieDetailStyles.valueSubTitle}>{generateGenre()}</Text>
-              </View>
-              <Text style={movieDetailStyles.valueDescription}>{props.data.description}</Text>
-              <Divider
-                orientation="vertical"
-                color="#186B8B"
-                style={movieDetailStyles.divider}
-              />
-              <View style={movieDetailStyles.productionCompaniesWrapper}>
-                <Text style={movieDetailStyles.label}>Film House</Text>
-                <View style={movieDetailStyles.companyList}>
-                  {
-                    props.data.productionCompanies.map((company: ProductionCompany) => {
-                      return <View style={movieDetailStyles.companyWrapper}>
-                        <Avatar rounded style={movieDetailStyles.logoCompany} source={{
-                          uri: IMAGE_URL + company.logoPath
-                        }}
-                        />
-                        <Text numberOfLines={1} ellipsizeMode="tail"
-                              style={movieDetailStyles.nameLogoCompany}>{company.name}</Text>
-                      </View>
-                    })
-                  }
+            <GestureRecognizer onSwipeUp={props.toggleContainerOpen} onSwipeDown={props.toggleContainerOpen} >
+              {/*<Icon type="material" name="maximize" style={movieDetailStyles.iconSwipeUp}/>*/}
+              <TouchableOpacity style={movieDetailStyles.content} onPress={props.toggleContainerOpen} activeOpacity={100}>
+                <Text style={movieDetailStyles.valueLabel}
+                      numberOfLines={1}
+                      ellipsizeMode="tail">{props.data.title}</Text>
+                <View style={movieDetailStyles.yearAndGenreWrapper}>
+                  <Text style={movieDetailStyles.valueSubTitle}>{props.data.releaseDate.substring(0, 4)}</Text>
+                  <Divider orientation="vertical" color="black" width={5} style={movieDetailStyles.valueSubTitle}/>
+                  <Text style={movieDetailStyles.valueSubTitle}>{generateGenre()}</Text>
                 </View>
-              </View>
-            </TouchableOpacity>
+                <Text style={movieDetailStyles.valueDescription}>{props.data.description}</Text>
+                <Divider
+                  orientation="vertical"
+                  color="#186B8B"
+                  style={movieDetailStyles.divider}
+                />
+                <View style={movieDetailStyles.productionCompaniesWrapper}>
+                  <Text style={movieDetailStyles.label}>Film House</Text>
+                  <View style={movieDetailStyles.companyList}>
+                    {
+                      props.data.productionCompanies.map((company: ProductionCompany, index) => {
+                        return <View style={movieDetailStyles.companyWrapper} key={index}>
+                          <Avatar rounded imageProps={movieDetailStyles.logoCompany} source={{
+                            uri: IMAGE_URL + company.logoPath
+                          }}
+                          />
+                          <Text numberOfLines={1} ellipsizeMode="tail"
+                                style={movieDetailStyles.nameLogoCompany}>{company.name}</Text>
+                        </View>
+                      })
+                    }
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </GestureRecognizer>
           </Animated.View>
         </View>
       </ImageBackground>

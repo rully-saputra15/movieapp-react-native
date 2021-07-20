@@ -72,8 +72,8 @@ const MovieDetailContainer: React.FC<MovieDetailProps> = (props: MovieDetailProp
     return () => backHandler.remove();
   }, []);
 
-  const toggleSwipeUp = () => {
-    const toValue = isContainerContentOpen ? hp('85%') : hp('20%')
+  const toggleContainerOpen = () => {
+    const toValue = isContainerContentOpen ? hp('85%') : hp('20%');
     Animated.spring(
       bounceValue,
       {
@@ -86,6 +86,7 @@ const MovieDetailContainer: React.FC<MovieDetailProps> = (props: MovieDetailProp
     ).start();
     setIsContainerContentOpen(!isContainerContentOpen);
   }
+
   return (
     <>
       {
@@ -94,7 +95,7 @@ const MovieDetailContainer: React.FC<MovieDetailProps> = (props: MovieDetailProp
           :
           <MovieDetailComponent data={movieData}
                                 animation={bounceValue}
-                                toggleSwipeUp={toggleSwipeUp}/>
+                                toggleContainerOpen={toggleContainerOpen}/>
 
       }
     </>

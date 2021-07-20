@@ -70,6 +70,7 @@ export const movieDetailStyles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 24,
+    paddingVertical: 16
   },
   iconSwipeUp: {
     marginTop: 8

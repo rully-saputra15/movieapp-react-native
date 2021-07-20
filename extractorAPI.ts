@@ -1,7 +1,7 @@
-import { AllMovies, Genre, MovieDetail, ProductionCompany } from "./state";
+import { Movies, Genre, MovieDetail, ProductionCompany } from "./state";
 
-export const extractAllMovie = (unformattedAllMovies: any[]): AllMovies[] => {
-  let formattedAllMovies: AllMovies[] = [];
+export const extractAllMovie = (unformattedAllMovies: any[]): Movies[] => {
+  let formattedAllMovies: Movies[] = [];
   unformattedAllMovies.forEach((unformattedAllMovie: any) => {
     formattedAllMovies.push({
       isAdult: unformattedAllMovie.is_adult,
@@ -11,7 +11,8 @@ export const extractAllMovie = (unformattedAllMovies: any[]): AllMovies[] => {
       popularity: unformattedAllMovie.popularity,
       posterPath: unformattedAllMovie.poster_path,
       releaseDate: unformattedAllMovie.release_date,
-      title: unformattedAllMovie.title
+      title: unformattedAllMovie.title,
+      voteAverage: unformattedAllMovie.vote_average
     });
   });
   return formattedAllMovies;

@@ -1,4 +1,14 @@
-export interface AllMovies {
+export interface State {
+  data: DataState;
+}
+
+export interface DataState {
+  topRatedMovies: Movies[];
+  nowPlayingMovies: Movies[];
+  FavoriteMovie: FavoriteMovie[];
+}
+
+export interface Movies {
   isAdult: boolean;
   backdropPath: string;
   id: number;
@@ -7,8 +17,14 @@ export interface AllMovies {
   posterPath: string;
   releaseDate: string;
   title: string;
+  voteAverage: number;
 }
-
+export interface FavoriteMovie{
+  id: number;
+  title: string;
+  posterPath: string;
+  voteAverage: number;
+}
 export interface MovieDetail {
   isAdult: boolean;
   backdropPath: string;

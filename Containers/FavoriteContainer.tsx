@@ -10,33 +10,23 @@ import { dataReducer } from "../reducers";
 import { DataState } from "../state";
 import { Context, initialDataState } from "../store";
 import produce from "immer";
+import FavoriteComponent from "../Components/FavoriteComponent";
+import { removeFavoriteMovies } from "../actionMovies";
 
-interface AboutContainerProps {
+interface FavoriteContainerProps {
 
 }
-type aboutScreenProp = StackNavigationProp<RootStackParamList,'About'>
 
-const AboutContainer: React.FC<AboutContainerProps> = (props: AboutContainerProps) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+const FavoriteContainer: React.FC<FavoriteContainerProps> = (props: FavoriteContainerProps) => {
   const [data, dispatch] = useContext(Context);
-  useEffect(() => {
-    Animated.timing(
 
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: 500,
-        easing: Easing.back(1),
-        isInteraction: false,
-        useNativeDriver: true,
-      }
-    ).start();
-  }, [fadeAnim]);
-
+  const removeFavoriteMovie = (id: number) => {
+    dispatch(removeFavoriteMovies(id))
+  }
   return (
-    <AboutComponent data={data.topRatedMovies} animatedImage={fadeAnim} />
+    <FavoriteComponent data={data.FavoriteMovie} removeFavoriteMovie={removeFavoriteMovie} />
   );
 };
 
 
-export default AboutContainer;
+export default FavoriteContainer;

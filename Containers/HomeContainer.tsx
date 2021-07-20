@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import HomeComponent from "../Components/HomeComponent";
 
-import { AllMovies } from "../state";
-import { getAllTopRatedMovies } from "../API/getApi";
+import { DataState, Movies } from "../state";
+import { getAllNowPlayingMovies, getAllTopRatedMovies } from "../API/getApi";
 import LoadingComponent from "../Components/Common/LoadingComponent";
 import { RootStackParamList } from "../App";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-
+import { useImmerReducer } from "use-immer";
+import { ADD_NOW_PLAYING_MOVIES, addFavoriteMovies, addNowPlayingMovies, addTopRatedMovies } from "../actionMovies";
+import { Context, initialDataState } from "../store";
+import { dataReducer } from "../reducers";
+import * as status from "../status";
+import BottomSheetComponent from "../Components/Common/BottomSheet";
 
 interface HomeContainerProps {
 
@@ -20,18 +25,26 @@ const HomeContainer: React.FC<HomeContainerProps> = (props: HomeContainerProps) 
   };
   const navigation = useNavigation<homeScreenProps>();
   const [name, setName] = useState("");
-  const [data, setData] = useState<AllMovies[]>(initialState.allMovies);
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [data, dispatch] = useContext(Context)
+  //const [data, dispatch] = useImmerReducer<DataState>(dataReducer, initialDataState);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [selectedMovieID, setSelectedMovieID] = useState<number>(0);
   useEffect(() => {
-    getAllTopRatedMovies(1)
-      .then((response) => {
-        if (response) {
-          setData(response);
-          setIsLoading(false);
-        }
-      });
-  }, []);
+    if (data.topRatedMovies.length <= 0) {
+      getAllTopRatedMovies(1)
+        .then((response) => {
+          if (response) {
+            dispatch(addTopRatedMovies(response))
+            getAllNowPlayingMovies(1)
+              .then((response) => {
+                if (response) {
+                  dispatch(addNowPlayingMovies(response));
+                }
+              })
+          }
+        });
+    }
+  }, [dispatch]);
   const setNameText = (input: string) => {
     setName(input);
   };
@@ -40,21 +53,44 @@ const HomeContainer: React.FC<HomeContainerProps> = (props: HomeContainerProps) 
     navigation.navigate("About");
   };
 
+  const addToFavoriteMovie = () => {
+    const dataTmp: Movies[] = data.topRatedMovies.concat(data.nowPlayingMovies);
+    const movie = dataTmp.find(val => val.id === selectedMovieID);
+    if (movie) {
+      dispatch(addFavoriteMovies(movie));
+      setSelectedMovieID(0);
+      setIsBottomSheetVisible(false);
+    }
+
+  }
   const goToDetailMovie = (id: string) => {
     navigation.push("MovieDetail", { id: id })
   };
-
+  const openBottomSheet = (id: number) => {
+    setSelectedMovieID(id);
+    setIsBottomSheetVisible(true)
+  }
   return (
     <>
       {
-        isLoading ?
+        data.topRatedMovies.length <= 0 && data.nowPlayingMovies.length <= 0 ?
           <LoadingComponent/>
           :
           <HomeComponent name={name}
                          setNameText={setNameText}
-                         data={data}
+                         topRatedMovies={data.topRatedMovies}
+                         nowPlayingMovies={data.nowPlayingMovies}
+                         openBottomSheet={openBottomSheet}
                          goToAbout={goToAbout}
                          goToDetailMovie={goToDetailMovie}/>
+      }
+      {
+        isBottomSheetVisible ?
+          <BottomSheetComponent movieId={selectedMovieID}
+                                isVisible={isBottomSheetVisible}
+                                addToFavoriteMovie={addToFavoriteMovie}/>
+          :
+          null
       }
     </>
   );
