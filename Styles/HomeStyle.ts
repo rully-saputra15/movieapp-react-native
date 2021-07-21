@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { fontStyles } from "./fontStyles";
 
 export const homeStyles = StyleSheet.create({
 
@@ -17,7 +18,7 @@ export const homeStyles = StyleSheet.create({
     alignSelf:"flex-start",
     fontSize: hp('3%'),
     margin: 16,
-    fontWeight:"bold"
+    fontFamily: fontStyles.header1.fontFamily
   },
   mainFlatListIos:{
     shadowColor: '#000',
@@ -27,18 +28,21 @@ export const homeStyles = StyleSheet.create({
 
   },
   mainFlatListAndroid:{
-    elevation: 2,
-    zIndex: 2,
+    marginHorizontal:8,
+    marginVertical:8,
+    backgroundColor:"transparent",
+    elevation: 12,
   },
   flatList: {
     width: wp('100%'),
-    height:wp('72.5%'),
-    marginTop: 8
+    height:wp('67.5%'),
+    marginTop: 8,
   },
   flatListItem: {
     marginVertical:8,
-    padding:24,
-    marginHorizontal:16,
+    paddingVertical:16,
+    paddingHorizontal: 8,
+    marginHorizontal:8,
     flexDirection:"column",
     justifyContent:"center",
     alignItems:"center",
@@ -57,9 +61,9 @@ export const homeStyles = StyleSheet.create({
     marginRight: 4,
   },
   rating: {
-    fontWeight: "bold",
     color: "#F7F8F9",
     fontSize: hp('1.5%'),
+    fontFamily: fontStyles.captionMedium.fontFamily
   },
   contentInsideMovie:{
     width:wp('40%'),

@@ -1,13 +1,15 @@
 import React from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
 import { FavoriteMovie } from "../state";
 import { favoriteMovieStyle } from "../Styles/FavoriteMovieStyle";
-import { Avatar, ListItem } from "react-native-elements";
+import { Avatar, ListItem, Rating } from "react-native-elements";
 import { IMAGE_URL } from "../settings";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 interface FavoriteComponentProps {
   data: FavoriteMovie[],
   removeFavoriteMovie: (id: number) => void;
+  goToDetailMovie: (id: number) => void;
 }
 
 
@@ -19,19 +21,24 @@ const FavoriteComponent: React.FC<FavoriteComponentProps> = (props: FavoriteComp
           uri: IMAGE_URL + item.posterPath
         }}/>
         <ListItem.Content>
-          <ListItem.Title>{item.title}</ListItem.Title>
-          <ListItem.Subtitle>{item.voteAverage}</ListItem.Subtitle>
+          <ListItem.Title style={favoriteMovieStyle.flatListTitle}>{item.title}</ListItem.Title>
+          <ListItem.Subtitle>
+            <Rating type="star" readonly ratingColor="yellow" startingValue={item.voteAverage / 2}
+                    imageSize={hp('2%')}/>
+          </ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
     )
   }
 
   const renderItemList = (item: FavoriteMovie) => {
-    return <TouchableOpacity key={item.id}
-                             activeOpacity={95}
-                             onLongPress={() => props.removeFavoriteMovie(item.id)}>
+    return <Pressable key={item.id}
+                      delayLongPress={100}
+                      android_ripple={{ color: "#808080", radius: 30 }}
+                      onPress={() => props.goToDetailMovie(item.id)}
+                      onLongPress={() => props.removeFavoriteMovie(item.id)}>
       {contentList(item)}
-    </TouchableOpacity>
+    </Pressable>
   }
   return (
     <View style={favoriteMovieStyle.mainView}>

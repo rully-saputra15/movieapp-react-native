@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { fontStyles } from "./fontStyles";
 
 export const favoriteMovieStyle = StyleSheet.create({
 
@@ -14,5 +15,8 @@ export const favoriteMovieStyle = StyleSheet.create({
     marginTop: 16,
     width: wp("90%"),
     height: hp("100%")
+  },
+  flatListTitle:{
+    fontFamily: fontStyles.captionSmall.fontFamily
   }
 });

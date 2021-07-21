@@ -11,7 +11,6 @@
 import React from "react";
 import HomeContainer from "./Containers/HomeContainer";
 import AboutContainer from "./Containers/AboutContainer";
-import HeaderContainer from "./Containers/HeaderContainer";
 import { SafeAreaProvider } from "react-native-safe-area-view";
 import MovieDetailContainer from "./Containers/MovieDetailContainer";
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,6 +22,9 @@ import { dataReducer } from "./reducers";
 import { initialDataState, Context } from "./store";
 import FavoriteContainer from "./Containers/FavoriteContainer";
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useFonts } from "expo-font";
+import LoadingComponent from "./Components/Common/LoadingComponent";
+
 
 export type MainBottomTabParamList = {
   Home: undefined;
@@ -52,6 +54,14 @@ const App = () => {
   const Stack = createStackNavigator();
   const BottomTab = createBottomTabNavigator<MainBottomTabParamList>();
   const [store, dispatch] = useImmerReducer(dataReducer, initialDataState);
+  let [fontsLoaded] = useFonts({
+    'Montserrat-Light': require('./assets/fonts/montserrat/Montserrat-Light.ttf'),
+    'Montserrat-Regular': require('./assets/fonts/montserrat/Montserrat-Regular.ttf'),
+    'Montserrat-Medium': require('./assets/fonts/montserrat/Montserrat-Medium.ttf'),
+    'Montserrat-SemiBold': require('./assets/fonts/montserrat/Montserrat-SemiBold.ttf'),
+    'Montserrat-Bold': require('./assets/fonts/montserrat/Montserrat-Bold.ttf'),
+    'Montserrat-Black': require('./assets/fonts/montserrat/Montserrat-Black.ttf'),
+  })
   const Home = () => {
     return (
       <BottomTab.Navigator screenOptions={({ route }: any) => ({
@@ -85,9 +95,11 @@ const App = () => {
       </BottomTab.Navigator>
     )
   }
-  return (
+  if (!fontsLoaded) {
+    return <LoadingComponent/>
+  } else {
     // @ts-ignore
-    <Context.Provider value={[store, dispatch]}>
+    return <Context.Provider value={[store, dispatch]}>
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator mode="modal" headerMode="float" screenOptions={{
@@ -106,9 +118,10 @@ const App = () => {
         </NavigationContainer>
       </SafeAreaProvider>
     </Context.Provider>
-  )
-    ;
-};
+
+  }
+
+}
 
 
 export default App;

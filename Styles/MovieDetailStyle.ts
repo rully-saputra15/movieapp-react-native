@@ -1,5 +1,6 @@
 import { PixelRatio, StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { fontStyles } from "./fontStyles";
 
 export const movieDetailStyles = StyleSheet.create({
   container: {
@@ -55,7 +56,7 @@ export const movieDetailStyles = StyleSheet.create({
     marginRight: 4,
   },
   rating: {
-    fontWeight: "bold",
+    fontFamily: fontStyles.captionMedium.fontFamily,
     color: "#F7F8F9",
     fontSize: hp('2%'),
   },
@@ -118,19 +119,21 @@ export const movieDetailStyles = StyleSheet.create({
   },
   label: {
     fontSize: hp('2.5%'),
-    fontWeight: "100"
+    fontFamily: fontStyles.captionMedium.fontFamily
   },
   valueLabel: {
     fontSize: hp('3%'),
-    fontWeight: "bold"
+    fontFamily: fontStyles.header1.fontFamily,
   },
   valueDescription: {
-    fontSize: hp('1.75ex%'),
+    fontSize: hp('1.75%'),
+    fontFamily: fontStyles.captionMedium.fontFamily,
     textAlign: "justify"
   },
   valueSubTitle: {
     marginRight: 8,
-    fontSize: hp('1.75%')
+    fontSize: hp('1.75%'),
+    fontFamily: fontStyles.captionMedium.fontFamily,
   },
   imagePosterBackground: {
     width: wp('80%'),
@@ -147,6 +150,7 @@ export const movieDetailStyles = StyleSheet.create({
   },
   nameLogoCompany: {
     fontSize: PixelRatio.getPixelSizeForLayoutSize(6),
+    fontFamily:fontStyles.captionSmall.fontFamily
   },
   divider: {
     borderBottomWidth: 5,

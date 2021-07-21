@@ -1,20 +1,9 @@
 import React from "react";
-import {
-  FlatList,
-  Text,
-  View,
-  Image,
-  ImageBackground,
-  Platform,
-  TouchableNativeFeedback,
-  ScrollView
-} from "react-native";
+import { FlatList, Image, ImageBackground, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { Movies } from "../state";
-import { Avatar, Icon, ListItem } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { IMAGE_URL } from "../settings";
 import { homeStyles } from "../Styles/HomeStyle";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { movieDetailStyles } from "../Styles/MovieDetailStyle";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 
@@ -70,13 +59,15 @@ const HomeComponent: React.FC<AppComponentProps> = (props: AppComponentProps) =>
     //                          onPress={() => props.goToDetailMovie(item.id.toString())}>
     //   {renderItem(item)}
     // </TouchableOpacity>
-    return <TouchableOpacity key={item.id}
-                                  activeOpacity={95}
-                                  style={Platform.OS === 'android' ? {elevation: 10}: homeStyles.mainFlatListIos}
-                                  onPress={() => props.goToDetailMovie(item.id.toString())}
-                                  onLongPress={() => props.openBottomSheet(item.id)}>
+
+    return       <Pressable key={item.id}
+                            delayLongPress={200}
+                            android_ripple={{color:"#808080", radius:150}}
+                            style={Platform.OS === 'android' ?  homeStyles.mainFlatListAndroid: homeStyles.mainFlatListIos}
+                            onPress={() => props.goToDetailMovie(item.id.toString())}
+                            onLongPress={() => props.openBottomSheet(item.id)}>
       {renderItem(item)}
-    </TouchableOpacity>
+    </Pressable>
   };
 
   return (

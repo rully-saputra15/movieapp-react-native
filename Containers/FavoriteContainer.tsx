@@ -16,15 +16,23 @@ import { removeFavoriteMovies } from "../actionMovies";
 interface FavoriteContainerProps {
 
 }
+type favoriteScreenProps = StackNavigationProp<RootStackParamList, 'Favorite'>;
 
 const FavoriteContainer: React.FC<FavoriteContainerProps> = (props: FavoriteContainerProps) => {
   const [data, dispatch] = useContext(Context);
+  const navigation = useNavigation<favoriteScreenProps>();
 
   const removeFavoriteMovie = (id: number) => {
     dispatch(removeFavoriteMovies(id))
   }
+  const goToDetailMovie = (id: string) => {
+    navigation.push("MovieDetail", { id: id })
+  };
+
   return (
-    <FavoriteComponent data={data.FavoriteMovie} removeFavoriteMovie={removeFavoriteMovie} />
+    <FavoriteComponent data={data.FavoriteMovie}
+                       goToDetailMovie={goToDetailMovie}
+                       removeFavoriteMovie={removeFavoriteMovie} />
   );
 };
 

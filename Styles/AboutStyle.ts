@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { fontStyles } from "./fontStyles";
 
 export const aboutStyles = StyleSheet.create({
 
@@ -12,7 +13,8 @@ export const aboutStyles = StyleSheet.create({
   subView: {},
   titleText: {
     fontSize: 24,
-    marginTop: 16
+    marginTop: 16,
+    fontFamily:fontStyles.header1.fontFamily
   },
   flatList: {
     flex: 2,

@@ -1,18 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import HomeComponent from "../Components/HomeComponent";
 
-import { DataState, Movies } from "../state";
+import { Movies } from "../state";
 import { getAllNowPlayingMovies, getAllTopRatedMovies } from "../API/getApi";
 import LoadingComponent from "../Components/Common/LoadingComponent";
 import { RootStackParamList } from "../App";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { useImmerReducer } from "use-immer";
-import { ADD_NOW_PLAYING_MOVIES, addFavoriteMovies, addNowPlayingMovies, addTopRatedMovies } from "../actionMovies";
-import { Context, initialDataState } from "../store";
-import { dataReducer } from "../reducers";
-import * as status from "../status";
-import BottomSheetComponent from "../Components/Common/BottomSheet";
+import { addFavoriteMovies, addNowPlayingMovies, addTopRatedMovies } from "../actionMovies";
+import { Context } from "../store";
+import ModalFavoriteComponent from "../Components/Common/ModalFavorite";
 
 interface HomeContainerProps {
 
@@ -27,7 +24,7 @@ const HomeContainer: React.FC<HomeContainerProps> = (props: HomeContainerProps) 
   const [name, setName] = useState("");
   const [data, dispatch] = useContext(Context)
   //const [data, dispatch] = useImmerReducer<DataState>(dataReducer, initialDataState);
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [isModalFavoriteOpen, setIsModalFavoriteOpen] = useState(false);
   const [selectedMovieID, setSelectedMovieID] = useState<number>(0);
   useEffect(() => {
     if (data.topRatedMovies.length <= 0) {
@@ -54,21 +51,24 @@ const HomeContainer: React.FC<HomeContainerProps> = (props: HomeContainerProps) 
   };
 
   const addToFavoriteMovie = () => {
+    setIsModalFavoriteOpen(false);
     const dataTmp: Movies[] = data.topRatedMovies.concat(data.nowPlayingMovies);
     const movie = dataTmp.find(val => val.id === selectedMovieID);
     if (movie) {
       dispatch(addFavoriteMovies(movie));
       setSelectedMovieID(0);
-      setIsBottomSheetVisible(false);
     }
-
   }
   const goToDetailMovie = (id: string) => {
     navigation.push("MovieDetail", { id: id })
   };
-  const openBottomSheet = (id: number) => {
+  const openModalFavorite = (id: number) => {
     setSelectedMovieID(id);
-    setIsBottomSheetVisible(true)
+    setIsModalFavoriteOpen(true)
+  }
+  const closeModalFavorite = () => {
+    console.log("masuk");
+    setIsModalFavoriteOpen(false);
   }
   return (
     <>
@@ -80,15 +80,16 @@ const HomeContainer: React.FC<HomeContainerProps> = (props: HomeContainerProps) 
                          setNameText={setNameText}
                          topRatedMovies={data.topRatedMovies}
                          nowPlayingMovies={data.nowPlayingMovies}
-                         openBottomSheet={openBottomSheet}
+                         openBottomSheet={openModalFavorite}
                          goToAbout={goToAbout}
                          goToDetailMovie={goToDetailMovie}/>
       }
       {
-        isBottomSheetVisible ?
-          <BottomSheetComponent movieId={selectedMovieID}
-                                isVisible={isBottomSheetVisible}
-                                addToFavoriteMovie={addToFavoriteMovie}/>
+        isModalFavoriteOpen ?
+          <ModalFavoriteComponent movieId={selectedMovieID}
+                                  isVisible={isModalFavoriteOpen}
+                                  closeModalFavorite={closeModalFavorite}
+                                  addToFavoriteMovie={addToFavoriteMovie}/>
           :
           null
       }

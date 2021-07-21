@@ -13,12 +13,17 @@ export const dataReducer = (draft: Draft<DataState>, action: any) => {
     case actionMovies.ADD_NOW_PLAYING_MOVIES:
       return void draft.nowPlayingMovies.push(...action.payload)
     case actionMovies.ADD_FAVORITE_MOVIES:
-      return void draft.FavoriteMovie.push({
-        id: action.payload.id,
-        title: action.payload.title,
-        posterPath: action.payload.posterPath,
-        voteAverage: action.payload.voteAverage
-      })
+      const draftIdx = draft.FavoriteMovie.findIndex(val => val.id === action.payload.id);
+      if (draftIdx === -1){
+        return void draft.FavoriteMovie.push({
+          id: action.payload.id,
+          title: action.payload.title,
+          posterPath: action.payload.posterPath,
+          voteAverage: action.payload.voteAverage
+        })
+      } else {
+        return ;
+      }
     case actionMovies.REMOVE_FAVORITE_MOVIES:
       const draftIndex = draft.FavoriteMovie.findIndex(val => val.id === action.payload);
       return void draft.FavoriteMovie.splice(draftIndex, 1)
