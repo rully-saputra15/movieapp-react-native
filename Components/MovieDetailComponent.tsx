@@ -16,7 +16,7 @@ interface MovieDetailComponentProps {
 
 
 const MovieDetailComponent: React.FC<MovieDetailComponentProps> = (props: MovieDetailComponentProps) => {
-  const colorBadge = ["primary", "success", "warning", "error"]
+
   const generateGenre = () => {
     let genresName: string[] = []
     props.data.genres.forEach((genre) => {

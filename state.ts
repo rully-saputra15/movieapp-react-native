@@ -6,6 +6,9 @@ export interface DataState {
   topRatedMovies: Movies[];
   nowPlayingMovies: Movies[];
   FavoriteMovie: FavoriteMovie[];
+  allGenres:Genre[];
+  successfullyAddFavoriteMovie: boolean;
+  successfullyRemoveFavoriteMovie: boolean;
 }
 
 export interface Movies {
@@ -18,6 +21,7 @@ export interface Movies {
   releaseDate: string;
   title: string;
   voteAverage: number;
+  isFavorite: boolean;
 }
 export interface FavoriteMovie{
   id: number;

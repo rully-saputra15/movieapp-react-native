@@ -1,14 +1,16 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "target": "es5",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-native",
     "lib": [
       "dom",
-      "dom.iterable",
       "esnext"
     ],
+    "moduleResolution": "node",
+    "noEmit": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "strict": true
   }
 }

@@ -1,38 +1,33 @@
-import React, { useEffect, useRef,useContext } from "react";
-import AboutComponent from "../Components/AboutComponent";
-import { RouteComponentProps } from "react-router";
-import { Animated, Easing } from "react-native";
+import React, { useContext } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../App";
 import { useNavigation } from "@react-navigation/native";
-import { useImmerReducer } from "use-immer";
-import { dataReducer } from "../reducers";
-import { DataState } from "../state";
-import { Context, initialDataState } from "../store";
-import produce from "immer";
+import { Context } from "../store";
 import FavoriteComponent from "../Components/FavoriteComponent";
-import { removeFavoriteMovies } from "../actionMovies";
+import { removeFavoriteMovies, removeFavoriteMovieStatus } from "../actionMovies";
 
 interface FavoriteContainerProps {
 
 }
+
 type favoriteScreenProps = StackNavigationProp<RootStackParamList, 'Favorite'>;
 
-const FavoriteContainer: React.FC<FavoriteContainerProps> = (props: FavoriteContainerProps) => {
+const FavoriteContainer: React.FC<FavoriteContainerProps> = () => {
   const [data, dispatch] = useContext(Context);
   const navigation = useNavigation<favoriteScreenProps>();
 
   const removeFavoriteMovie = (id: number) => {
-    dispatch(removeFavoriteMovies(id))
+    dispatch(removeFavoriteMovies(id));
+    dispatch(removeFavoriteMovieStatus(true));
   }
-  const goToDetailMovie = (id: string) => {
-    navigation.push("MovieDetail", { id: id })
+  const goToDetailMovie = (id: number) => {
+    navigation.push("MovieDetail", { id: id.toString() })
   };
 
   return (
     <FavoriteComponent data={data.FavoriteMovie}
                        goToDetailMovie={goToDetailMovie}
-                       removeFavoriteMovie={removeFavoriteMovie} />
+                       removeFavoriteMovie={removeFavoriteMovie}/>
   );
 };
 

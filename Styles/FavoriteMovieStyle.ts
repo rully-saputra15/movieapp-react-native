@@ -12,7 +12,7 @@ export const favoriteMovieStyle = StyleSheet.create({
     alignItems: "center"
   },
   flatListStyle: {
-    marginTop: 16,
+    marginTop: hp('8%'),
     width: wp("90%"),
     height: hp("100%")
   },

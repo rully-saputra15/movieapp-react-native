@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Modal, Pressable, Text, View } from "react-native";
 import { modalFavoriteStyles } from "../../Styles/ModalFavoriteStyle";
 import { Icon } from "react-native-elements";
 
@@ -17,7 +17,6 @@ const ModalFavoriteComponent: React.FC<ModalFavoriteComponentProps> = (props: Mo
     <Modal visible={props.isVisible}
            animationType="slide"
            transparent={true}
-           hardwareAccelerated={true}
            onRequestClose={() => props.closeModalFavorite}>
       <View style={modalFavoriteStyles.mainView}>
         <View style={modalFavoriteStyles.modalView}>

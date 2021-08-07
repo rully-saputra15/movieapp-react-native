@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { Header } from "react-native-elements";
 
 interface HeaderComponentProps {
@@ -7,7 +6,7 @@ interface HeaderComponentProps {
 }
 
 
-const HeaderComponent: React.FC<HeaderComponentProps> = (props: HeaderComponentProps) => {
+const HeaderComponent: React.FC<HeaderComponentProps> = () => {
 
   return (
     <Header placement="left"

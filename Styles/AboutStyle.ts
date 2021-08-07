@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { fontStyles } from "./fontStyles";
+import { widthPercentageToDP as wp} from "react-native-responsive-screen";
 
 export const aboutStyles = StyleSheet.create({
 
@@ -29,8 +30,10 @@ export const aboutStyles = StyleSheet.create({
     height: 200
   },
   nameTextInput: {
+    width:wp("60%"),
     paddingHorizontal: 4,
     paddingVertical: 4,
+    marginVertical:8,
     borderWidth: 0.5,
     borderRadius: 10
   }

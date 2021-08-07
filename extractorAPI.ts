@@ -12,7 +12,8 @@ export const extractAllMovie = (unformattedAllMovies: any[]): Movies[] => {
       posterPath: unformattedAllMovie.poster_path,
       releaseDate: unformattedAllMovie.release_date,
       title: unformattedAllMovie.title,
-      voteAverage: unformattedAllMovie.vote_average
+      voteAverage: unformattedAllMovie.vote_average,
+      isFavorite: false
     });
   });
   return formattedAllMovies;
@@ -40,7 +41,7 @@ export const extractMovieDetail = (unformattedMovieDetail: any): MovieDetail => 
   };
 };
 
-const extractGenres = (unformattedGenres: any[]): Genre[] => {
+export const extractGenres = (unformattedGenres: any[]): Genre[] => {
   let formattedGenres: Genre[] = [];
   unformattedGenres.forEach((genre: any) => {
     formattedGenres.push({

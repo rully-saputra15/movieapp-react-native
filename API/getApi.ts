@@ -1,6 +1,5 @@
-import { extractAllMovie, extractMovieDetail } from "../extractorAPI";
-import { API_KEY } from "../settings";
-
+import { extractAllMovie, extractGenres, extractMovieDetail } from "../extractorAPI";
+import { API_KEY } from "@env";
 
 export const getAllTopRatedMovies = async (numberOfPages: number) => {
   try {
@@ -21,6 +20,17 @@ export const getAllNowPlayingMovies = async (numberOfPages: number) => {
     let json = await response.json();
     return extractAllMovie(json.results);
   } catch (error) {
+    console.error(error);
+  }
+}
+export const getAllGenres = async () => {
+  try{
+    let response = await fetch(
+      "https://api.themoviedb.org/3/genre/movie/list?api_key=c1aff3eb010dba069fc4b1388e668d12&language=en-US"
+    )
+    let json = await response.json();
+    return extractGenres(json.genres)
+  } catch(error){
     console.error(error);
   }
 }

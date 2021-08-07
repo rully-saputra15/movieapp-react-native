@@ -13,17 +13,17 @@ import HomeContainer from "./Containers/HomeContainer";
 import AboutContainer from "./Containers/AboutContainer";
 import { SafeAreaProvider } from "react-native-safe-area-view";
 import MovieDetailContainer from "./Containers/MovieDetailContainer";
-import { NavigationContainer } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements'
 import { useImmerReducer } from "use-immer";
 import { dataReducer } from "./reducers";
-import { initialDataState, Context } from "./store";
+import { Context, initialDataState } from "./store";
 import FavoriteContainer from "./Containers/FavoriteContainer";
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import LoadingComponent from "./Components/Common/LoadingComponent";
+import ShowSuccesfullyActionModalContainer from "./Containers/ShowSuccesfullyActionModalContainer";
 
 
 export type MainBottomTabParamList = {
@@ -50,10 +50,12 @@ const getHeaderTitle = (route: any) => {
       return 'Favorite';
   }
 }
+
 const App = () => {
   const Stack = createStackNavigator();
   const BottomTab = createBottomTabNavigator<MainBottomTabParamList>();
   const [store, dispatch] = useImmerReducer(dataReducer, initialDataState);
+
   let [fontsLoaded] = useFonts({
     'Montserrat-Light': require('./assets/fonts/montserrat/Montserrat-Light.ttf'),
     'Montserrat-Regular': require('./assets/fonts/montserrat/Montserrat-Regular.ttf'),
@@ -65,7 +67,7 @@ const App = () => {
   const Home = () => {
     return (
       <BottomTab.Navigator screenOptions={({ route }: any) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused }) => {
           let iconName;
           if (route.name === 'Home') {
             iconName = focused
@@ -90,7 +92,8 @@ const App = () => {
                            }}
       >
         <BottomTab.Screen name="Home" component={HomeContainer}/>
-        <BottomTab.Screen name="Favorite" component={FavoriteContainer}/>
+        <BottomTab.Screen name="Favorite" component={FavoriteContainer}
+                          options={{ tabBarBadge: store.FavoriteMovie.length > 0 ? store.FavoriteMovie.length : undefined }}/>
         <BottomTab.Screen name="About" component={AboutContainer}/>
       </BottomTab.Navigator>
     )
@@ -107,15 +110,14 @@ const App = () => {
               backgroundColor: '#86ABBE',
             }
           }}>
-            <Stack.Screen name="Home" component={Home} options={({ route }) => ({
-              headerTitle: getHeaderTitle(route)
-            })}/>
+            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
             <Stack.Screen name="About" component={AboutContainer} options={({ route }) => ({
               headerTitle: getHeaderTitle(route)
             })}/>
             <Stack.Screen name="MovieDetail" component={MovieDetailContainer} options={{ title: "Movie Detail" }}/>
           </Stack.Navigator>
         </NavigationContainer>
+        <ShowSuccesfullyActionModalContainer/>
       </SafeAreaProvider>
     </Context.Provider>
 

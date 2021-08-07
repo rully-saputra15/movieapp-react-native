@@ -1,12 +1,13 @@
 import { DataState } from "./state";
 import React from "react";
-import { useImmerReducer } from "use-immer";
-import { dataReducer } from "./reducers";
 
 export const initialDataState: DataState = {
   topRatedMovies: [],
   nowPlayingMovies: [],
-  FavoriteMovie: []
+  FavoriteMovie: [],
+  allGenres:[],
+  successfullyAddFavoriteMovie: false,
+  successfullyRemoveFavoriteMovie: false
 }
 
 export const Context = React.createContext({

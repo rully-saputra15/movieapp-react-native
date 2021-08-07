@@ -10,12 +10,12 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
-interface MovieDetailProps{
+interface MovieDetailProps {
 
 }
 
-type movieDetailScreenProp = StackNavigationProp<RootStackParamList,"MovieDetail">;
-const MovieDetailContainer: React.FC<MovieDetailProps> = (props: MovieDetailProps) => {
+type movieDetailScreenProp = StackNavigationProp<RootStackParamList, "MovieDetail">;
+const MovieDetailContainer: React.FC<MovieDetailProps> = () => {
   const initialState = {
     movieDetail: {
       isAdult: false,
@@ -34,7 +34,7 @@ const MovieDetailContainer: React.FC<MovieDetailProps> = (props: MovieDetailProp
       productionCompanies: [],
       voteAverage: 0,
       voteCount: 0,
-      releaseDate:""
+      releaseDate: ""
     }
   };
   const navigation = useNavigation<movieDetailScreenProp>();
